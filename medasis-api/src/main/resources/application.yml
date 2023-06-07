@@ -1,0 +1,62 @@
+spring:
+  profiles:
+    active: @env@  #环境切换（打包时注意此时的配置与Profiles选定的一致）
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER  # 解决swagger文档扫描路径问题
+  output:
+    ansi:
+      enabled: detect # 日志输出颜色乱码
+  servlet:
+    multipart:
+      max-file-size: 10240MB # 10G 10240MB
+      max-request-size: 10240MB # 10240MB
+
+
+# log
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    org.springframework.data.mongodb.core: debug
+
+# Springfox3.0默认用swagger v3
+springfox:
+  documentation:
+    swagger:
+      use-model-v3: false # 关闭能解决swagger文档显示不全的问题
+
+#jwt
+jwt:
+  expire: 30 # token过期时间  （默认30分钟，用户操作后自动续期）
+  secret: abcdefghijklmnopqrstuvwxyz # 密钥
+  header: Authorization # 请求头
+  antMatchers: "api/open/**"  # 白名单(多个逗号分割)
+# 防止XSS攻击
+xss:
+  # 过滤开关
+  enabled: true
+  # 排除链接（多个用逗号分隔）
+  excludes: /api/common
+  # 匹配链接 （多个用逗号分隔）
+  urlPatterns: /api/sys/*,/api/business/**
+
+# 白名单路径列表
+white-list:
+  path:
+    include:
+      - /api/sys/login
+      - /api/open
+      - /swagger-resources
+      - /v2/api-docs
+      - /doc.html
+      - /webjars/
+      - /api-docs
+      - /druid
+      - /swagger-ui.html
+      - /error
+
+# openSlide相关配置
+open-slide:
+  img-size: 256 # 切割的图片像素
+  img-type: jpg # 切割的图片类型
+
